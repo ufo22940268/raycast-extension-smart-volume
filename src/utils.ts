@@ -2,17 +2,18 @@ import { getDefaultOutputDevice } from "./audioDevice";
 import { ExternalDisplaySpeaker } from "./externalDisplaySpeaker";
 import { Speaker } from "./speaker";
 import { AirpodsSpeaker } from "./airpodsSpeaker";
+import {Cache} from '@raycast/api'
 
 export enum VolumeAction {
   Up,
   Down,
-  // Mute,
+  ToggleMute,
 }
 
 const externalDisplaySpeaker = new ExternalDisplaySpeaker();
 const airpodsSpeaker = new AirpodsSpeaker();
 
-async function getActiveDevice(): Promise<Speaker> {
+export async function getActiveDevice(): Promise<Speaker> {
   const dev = await getDefaultOutputDevice();
   if (dev.transportType == "displayport") {
     return externalDisplaySpeaker;

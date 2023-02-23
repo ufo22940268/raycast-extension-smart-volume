@@ -1,7 +1,8 @@
 import {showHUD} from "@raycast/api";
-import {adjustVolume, getVolume, VolumeAction} from "./script";
+import { adjustVolume, getActiveDevice, getVolume, VolumeAction } from "./utils";
 
 export default async function Command() {
-  // await adjustVolume(VolumeAction.Mute);
-  // await showHUD(`🔊 Volume set to ${await getVolume()}%`);
+  const isMuted = await adjustVolume(VolumeAction.ToggleMute);
+  const msg = isMuted ? "🔇" : "🔉";
+  await showHUD(msg);
 }
