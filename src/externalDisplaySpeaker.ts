@@ -7,7 +7,6 @@ const cache = new Cache();
 
 export class ExternalDisplaySpeaker implements Speaker {
 
-    volume = -1;
     async adjustVolume(action: VolumeAction): Promise<boolean | number> {
         if (action == VolumeAction.ToggleMute) {
             let muted = this.getCache("isMuted") || 'off';
@@ -27,9 +26,11 @@ export class ExternalDisplaySpeaker implements Speaker {
                 delta = `-${ADJUST_STEP}`;
                 break;
         }
+        console.log("delta = " + JSON.stringify(delta, null, 2));
+
         const stdout = await exec("/usr/local/bin/m1ddc", ["chg", "volume", delta])
         this.setCache('volume', stdout);
-        return this.volume;
+        return Number.parseInt(stdout);
     }
 
     setCache(key: string, value: string) {
@@ -40,8 +41,7 @@ export class ExternalDisplaySpeaker implements Speaker {
         return cache.get(`external:${key}`)
     }
 
-
     async getVolume(): Promise<number> {
-        return Promise.resolve(this.volume);
+        return Promise.resolve(Number.parseInt(this.getCache("volume") as string));
     }
 }
