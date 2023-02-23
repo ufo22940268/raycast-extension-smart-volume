@@ -1,0 +1,62 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "smart-volume",
+  "title": "Smart volume",
+  "description": "Smart adjust volume",
+  "icon": "command-icon.png",
+  "author": "ufo22940268",
+  "categories": [
+    "Productivity"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "up",
+      "title": "Smart volume up",
+      "description": "Smart adjust volume up",
+      "mode": "no-view"
+    },
+    {
+      "name": "down",
+      "title": "Smart volume down",
+      "description": "Smart adjust volume down",
+      "mode": "no-view"
+    },
+    {
+      "name": "mute",
+      "title": "Smart volume mute",
+      "description": "Smart mute audio",
+      "mode": "no-view"
+    },
+    {
+      "name": "debug",
+      "title": "Smart volume debug",
+      "description": "",
+      "mode": "no-view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.48.0",
+    "execa": "^7.0.0",
+    "macos-audio-devices": "^1.4.0",
+    "run-applescript": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.8.3",
+    "@types/react": "18.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "copy-binary": "cp node_modules/macos-audio-devices/audio-devices assets/audio-devices",
+    "dev": "npm run copy-binary && ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "ray publish"
+  }
+}
