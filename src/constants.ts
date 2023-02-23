@@ -1,1 +1,1 @@
-export const ADJUST_STEP = 10;
+export const ADJUST_STEP = 5;
