@@ -26,8 +26,6 @@ export class ExternalDisplaySpeaker implements Speaker {
                 delta = `-${ADJUST_STEP}`;
                 break;
         }
-        console.log("delta = " + JSON.stringify(delta, null, 2));
-
         const stdout = await exec("/usr/local/bin/m1ddc", ["chg", "volume", delta])
         this.setCache('volume', stdout);
         return Number.parseInt(stdout);
