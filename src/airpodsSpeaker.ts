@@ -2,9 +2,11 @@ import { Speaker } from "./speaker";
 import { runAppleScript } from "run-applescript";
 import { VolumeAction } from "./utils";
 import { ADJUST_STEP } from "./constants";
+import { Cache } from "@raycast/api";
+
+const cache = new Cache();
 
 export class AirpodsSpeaker implements Speaker {
-    cache = -1
     async adjustVolume(action: VolumeAction) {
         if (action == VolumeAction.ToggleMute) {
             const muteScript = `set curVolume to get volume settings
@@ -14,8 +16,7 @@ else
 \tset volume without output muted
 end if
  return output muted of curVolume`;
-            const r = await runAppleScript(muteScript)
-            return r == "false";
+            return await runAppleScript(muteScript) == "false";
         }
 
         let delta: string;
@@ -31,11 +32,19 @@ end if
         const newVolume = await runAppleScript(`set volume output volume ((output volume of (get volume settings)) ${delta})
         return output volume of (get volume settings)
         `);
-        this.cache = Number.parseInt(newVolume);
-        return this.cache;
+        this.setCache("volume", newVolume);
+        return Number.parseInt(newVolume);
+    }
+
+    setCache(key: string, value: string) {
+        cache.set(`airpods:${key}`, value);
+    }
+
+    getCache(key: string) {
+        return cache.get(`airpods:${key}`)
     }
 
     async getVolume() {
-        return this.cache;
+        return Number.parseInt(this.getCache("volume") as string);
     }
 }

@@ -27,12 +27,6 @@
       "title": "Smart volume mute",
       "description": "Smart mute audio",
       "mode": "no-view"
-    },
-    {
-      "name": "debug",
-      "title": "Smart volume debug",
-      "description": "",
-      "mode": "no-view"
     }
   ],
   "dependencies": {
