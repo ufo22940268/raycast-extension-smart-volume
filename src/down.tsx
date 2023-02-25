@@ -1,5 +1,5 @@
 import {showHUD} from "@raycast/api";
-import { adjustVolume, getVolume, showVolume, VolumeAction } from "./utils";
+import { adjustVolume, getVolume, refreshMenubar, showVolume, VolumeAction } from "./utils";
 import { ABNORMAL_VOLUME } from "./constants";
 
 export default async function Command() {
@@ -7,4 +7,5 @@ export default async function Command() {
   const vol = await getVolume();
   if (vol == ABNORMAL_VOLUME) return;
   await showVolume(vol)
+  await refreshMenubar();
 }

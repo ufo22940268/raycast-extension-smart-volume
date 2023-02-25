@@ -1,4 +1,4 @@
-import { adjustVolume, getVolume, showMuted, showVolume, VolumeAction } from "./utils";
+import { adjustVolume, getVolume, refreshMenubar, showMuted, showVolume, VolumeAction } from "./utils";
 
 export default async function Command() {
   const isMuted = (await adjustVolume(VolumeAction.ToggleMute)) as boolean;
@@ -7,4 +7,5 @@ export default async function Command() {
   } else {
     await showVolume(await getVolume());
   }
+  await refreshMenubar();
 }

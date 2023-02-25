@@ -6,7 +6,7 @@ import { Cache } from "@raycast/api";
 
 const cache = new Cache();
 
-export class AirpodsSpeaker implements Speaker {
+export class InternalSpeaker implements Speaker {
     async adjustVolume(action: VolumeAction) {
         if (action == VolumeAction.ToggleMute) {
             const muteScript = `set curVolume to get volume settings
@@ -16,7 +16,9 @@ else
 \tset volume without output muted
 end if
  return output muted of curVolume`;
-            return await runAppleScript(muteScript) == "false";
+            const isMuted = await runAppleScript(muteScript) == "false"
+            this.setCache("isMuted", isMuted.toString());
+            return isMuted;
         }
 
         let delta: string;
@@ -37,14 +39,18 @@ end if
     }
 
     setCache(key: string, value: string) {
-        cache.set(`airpods:${key}`, value);
+        cache.set(`internal:${key}`, value);
     }
 
     getCache(key: string) {
-        return cache.get(`airpods:${key}`)
+        return cache.get(`internal:${key}`)
     }
 
-    async getVolume() {
+    getVolume() {
         return Number.parseInt(this.getCache("volume") as string);
+    }
+
+    isMuted(): boolean {
+        return (this.getCache("isMuted") as string) == "true";
     }
 }

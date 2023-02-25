@@ -9,11 +9,11 @@ export class ExternalDisplaySpeaker implements Speaker {
 
     async adjustVolume(action: VolumeAction): Promise<boolean | number> {
         if (action == VolumeAction.ToggleMute) {
-            let muted = this.getCache("isMuted") || 'off';
-            muted = muted == "on" ? "off" : "on";
-            await exec("/usr/local/bin/m1ddc", ["set", "mute", muted]);
+            let muted = this.getCache("isMuted") || "false";
+            muted = muted == "false" ? "true" : "false";
+            await exec("/usr/local/bin/m1ddc", ["set", "mute", muted == "true" ? "on" : "off"]);
             this.setCache("isMuted", muted);
-            return muted == 'on';
+            return muted == "true";
         }
 
         let delta;
@@ -36,10 +36,14 @@ export class ExternalDisplaySpeaker implements Speaker {
     }
 
     getCache(key: string) {
-        return cache.get(`external:${key}`)
+        return cache.get(`external:${key}`);
     }
 
-    async getVolume(): Promise<number> {
-        return Promise.resolve(Number.parseInt(this.getCache("volume") as string));
+    getVolume(): number {
+        return Number.parseInt(this.getCache("volume") as string);
+    }
+
+    isMuted(): boolean {
+        return (this.getCache("isMuted") as string) == "true";
     }
 }

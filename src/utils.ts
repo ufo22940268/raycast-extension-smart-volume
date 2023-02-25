@@ -1,9 +1,9 @@
 import { getDefaultOutputDevice } from "./audioDevice";
 import { ExternalDisplaySpeaker } from "./externalDisplaySpeaker";
 import { exec, Speaker } from "./speaker";
-import { AirpodsSpeaker } from "./airpodsSpeaker";
+import { InternalSpeaker } from "./internalSpeaker";
 import path from "path";
-import { environment } from "@raycast/api";
+import { environment, launchCommand, LaunchType } from "@raycast/api";
 import fs from "fs";
 import { execa } from "execa";
 
@@ -13,8 +13,8 @@ export enum VolumeAction {
   ToggleMute,
 }
 
-const externalDisplaySpeaker = new ExternalDisplaySpeaker();
-const airpodsSpeaker = new AirpodsSpeaker();
+export const externalDisplaySpeaker = new ExternalDisplaySpeaker();
+const airpodsSpeaker = new InternalSpeaker();
 
 export async function getActiveDevice(): Promise<Speaker> {
   const dev = await getDefaultOutputDevice();
@@ -55,4 +55,8 @@ export async function showMuted(muted: boolean) {
   } else {
     await exec(binary, ["volume"])
   }
+}
+
+export async function refreshMenubar() {
+  await launchCommand({ name: "volumeMenu", type: LaunchType.Background });
 }

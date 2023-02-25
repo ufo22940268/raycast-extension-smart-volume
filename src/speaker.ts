@@ -2,9 +2,11 @@ import { VolumeAction } from "./utils";
 import { execa } from "execa";
 
 export interface Speaker {
-    adjustVolume(action: VolumeAction): Promise<boolean | number>
+    adjustVolume(action: VolumeAction): Promise<boolean | number>;
 
-    getVolume(): Promise<number>;
+    getVolume(): number;
+
+    isMuted(): boolean;
 }
 
 export async function exec(bin: string, args: (string | any)[]): Promise<string> {
