@@ -1,5 +1,5 @@
 import { getDefaultOutputDevice } from "./audioDevice";
-import { ExternalDisplaySpeaker } from "./externalDisplaySpeaker";
+import { ExternalSpeaker } from "./externalSpeaker";
 import { exec, Speaker } from "./speaker";
 import { InternalSpeaker } from "./internalSpeaker";
 import path from "path";
@@ -13,15 +13,15 @@ export enum VolumeAction {
   ToggleMute,
 }
 
-export const externalDisplaySpeaker = new ExternalDisplaySpeaker();
-const airpodsSpeaker = new InternalSpeaker();
+export const externalSpeaker = new ExternalSpeaker();
+const internalSpeaker = new InternalSpeaker();
 
 export async function getActiveDevice(): Promise<Speaker> {
   const dev = await getDefaultOutputDevice();
   if (dev.transportType == "displayport") {
-    return externalDisplaySpeaker;
+    return externalSpeaker;
   } else {
-    return airpodsSpeaker;
+    return internalSpeaker;
   }
 }
 

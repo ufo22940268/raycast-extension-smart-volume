@@ -1,8 +1,8 @@
 import { Icon, MenuBarExtra } from "@raycast/api";
-import { externalDisplaySpeaker } from "./utils";
+import { externalSpeaker } from "./utils";
 
 export default function Command() {
-  const device = externalDisplaySpeaker;
+  const device = externalSpeaker;
   const vol = device.getVolume();
   const muted = device.isMuted();
 

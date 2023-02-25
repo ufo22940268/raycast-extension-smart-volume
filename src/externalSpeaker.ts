@@ -5,7 +5,7 @@ import { Cache } from "@raycast/api";
 
 const cache = new Cache();
 
-export class ExternalDisplaySpeaker implements Speaker {
+export class ExternalSpeaker implements Speaker {
 
     async adjustVolume(action: VolumeAction): Promise<boolean | number> {
         if (action == VolumeAction.ToggleMute) {
