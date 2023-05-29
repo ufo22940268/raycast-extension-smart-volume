@@ -7,6 +7,7 @@ import { environment, launchCommand, LaunchType } from "@raycast/api";
 import fs from "fs";
 import { execa } from "execa";
 
+
 export enum VolumeAction {
   Up,
   Down,
@@ -60,3 +61,21 @@ export async function showMuted(muted: boolean) {
 export async function refreshMenubar() {
   await launchCommand({ name: "volumeMenu", type: LaunchType.Background });
 }
+
+export const m1ddc = async (command: string[]): Promise<string> => {
+  const { stdout, stderr } = await execa("/usr/local/bin/m1ddc", command);
+  if (stderr) {
+    throw new Error("error m1ddc: " + stderr);
+  }
+
+  return stdout;
+}
+
+export const updateText = async (text: string) => {
+  await execa("python3", ['/Users/chao.cheng/code/extensions/auto-brightness/assets/cli.py', 'update_text', text]);
+}
+
+export async function updateVolume(vol: number) {
+  await updateText("volume:" + vol);
+}
+
