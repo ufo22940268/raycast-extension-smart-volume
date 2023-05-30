@@ -6,10 +6,6 @@ async function getVolume() {
 
 export default async () => {
   const volume = await getVolume();
-  if (isNaN(Number(volume))) {
-    const vol = Number(volume);
-    await updateVolume(vol);
-  } else {
-    throw new Error(`error get volume: ${volume}`);
-  }
+  const vol = Number(volume);
+  await updateVolume(vol);
 }

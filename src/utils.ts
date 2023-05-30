@@ -72,10 +72,10 @@ export const m1ddc = async (command: string[]): Promise<string> => {
 }
 
 export const updateText = async (text: string) => {
-  await execa("python3", ['/Users/chao.cheng/code/extensions/auto-brightness/assets/cli.py', 'update_text', text]);
+  await execa("python3", ['/Users/chao.cheng/code/extensions/smart-volume/assets/cli.py', 'update_text', text]);
 }
 
 export async function updateVolume(vol: number) {
-  await updateText("volume:" + vol);
+  await updateText(vol.toString());
 }
 
