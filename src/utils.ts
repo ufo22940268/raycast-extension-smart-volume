@@ -32,7 +32,7 @@ export const adjustVolume = async (action: VolumeAction) => {
 };
 
 export async function getVolume() {
-  return externalSpeaker.getVolume();
+  return (await getActiveDevice()).getVolume();
 }
 
 const binaryAsset = path.join(environment.assetsPath, "showosd");
