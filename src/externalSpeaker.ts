@@ -20,19 +20,26 @@ export class ExternalSpeaker implements Speaker {
 
         switch (action) {
             case VolumeAction.Up:
-                delta = `+${ADJUST_STEP}`
+                delta = ADJUST_STEP
                 break;
             case VolumeAction.Down:
-                delta = `-${ADJUST_STEP}`;
+                delta = -ADJUST_STEP
                 break;
         }
-        const stdout = await exec("/usr/local/bin/m1ddc", ["chg", "volume", delta])
-        this.setCache('volume', stdout);
-        if (stdout != '0') {
+
+        let vol = Number(this.getVolume());
+        if (isNaN(vol)) vol = 0;
+        vol += delta;
+        vol = Math.min(100, Math.max(0, vol));
+        console.log(vol);
+        await exec("/usr/local/bin/m1ddc", ["set", "volume", vol.toString()])
+        this.setCache('volume', vol.toString());
+        if (vol != 0) {
             this.setCache("isMuted", false.toString());
         }
-        return Number.parseInt(stdout);
+        return vol;
     }
+
 
     setCache(key: string, value: string) {
         cache.set(`external:${key}`, value);
@@ -48,5 +55,9 @@ export class ExternalSpeaker implements Speaker {
 
     isMuted(): boolean {
         return (this.getCache("isMuted") as string) == "true";
+    }
+
+    setVolume(volume1: string, vol: number) {
+        cache.set(`external:volume`, vol.toString());
     }
 }
