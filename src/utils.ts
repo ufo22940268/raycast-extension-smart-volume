@@ -1,6 +1,6 @@
 import { getDefaultOutputDevice } from "./audioDevice";
 import { ExternalSpeaker } from "./externalSpeaker";
-import { exec, Speaker } from "./speaker";
+import { exec, Speaker, VolumeInfo } from "./speaker";
 import { InternalSpeaker } from "./internalSpeaker";
 import path from "path";
 import { environment, launchCommand, LaunchType } from "@raycast/api";
@@ -19,12 +19,13 @@ export const externalSpeaker = new ExternalSpeaker();
 const internalSpeaker = new InternalSpeaker();
 
 export async function getActiveDevice(): Promise<Speaker> {
-  const dev = await getDefaultOutputDevice();
-  if (dev.transportType == "displayport") {
-    return externalSpeaker;
-  } else {
-    return internalSpeaker;
-  }
+  return externalSpeaker
+  // const dev = await getDefaultOutputDevice();
+  // if (dev.transportType == "displayport") {
+  //   return externalSpeaker;
+  // } else {
+  //   return internalSpeaker;
+  // }
 }
 
 export const adjustVolume = async (action: VolumeAction) => {
@@ -88,23 +89,22 @@ export const updateText = async (text: string) => {
   await execa("python3", ['/Users/chao.cheng/code/extensions/smart-volume/assets/cli.py', 'update_text', text]);
 }
 
-export async function updateVolume(vol: number) {
+export async function updateLCDVolume(vol: number) {
   await updateText(vol.toString());
 }
 
-export async function updateVolumeDisplay() {
-  const dev = await getActiveDevice()
-  const isMuted = dev.isMuted();
+export async function updateVolumeDisplay(volumeInfo: VolumeInfo) {
+  const isMuted = volumeInfo.isMuted;
+  const vol = volumeInfo.volume
   if (isMuted) {
     await showMuted(isMuted);
-    await updateVolume(0);
+    await updateLCDVolume(0);
   } else {
-    const vol = dev.getVolume()
     if (vol == ABNORMAL_VOLUME) {
       throw new Error("abnormal volume: " + vol);
     }
     await showVolume(vol);
-    await updateVolume(vol);
+    await updateLCDVolume(vol);
   }
   await refreshMenubar();
 }

@@ -1,4 +1,4 @@
-import { externalSpeaker, m1ddc, updateVolume } from "./utils";
+import { externalSpeaker, m1ddc, updateLCDVolume } from "./utils";
 
 async function getVolume() {
   const vol = await m1ddc(["get", "volume"]);
@@ -15,5 +15,5 @@ export default async () => {
   const vol = Number(volume);
   console.log(vol);
   externalSpeaker.setVolume('volume', vol)
-  await updateVolume(vol);
+  await updateLCDVolume(vol);
 }
