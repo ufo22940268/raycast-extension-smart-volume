@@ -25,7 +25,10 @@ export class ExternalSpeaker implements Speaker {
 
         let vol = Number(this.getVolume());
         console.log("vol = " + JSON.stringify(vol, null, 2));
-        if (isNaN(vol)) vol = 0;
+        if (isNaN(vol)) {
+            console.log("abnormal volume: "  + vol.toString())
+            return { isMuted: false, volume: 0, error: "abnormal volume: "  + vol.toString()}
+        }
         vol += this.getIncrementStep(action);
         this.setCache("lastUpdateTime", Date.now().toString());
         vol = Math.min(100, Math.max(0, vol));

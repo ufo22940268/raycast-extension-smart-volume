@@ -12,6 +12,7 @@ export interface Speaker {
 export interface VolumeInfo {
     isMuted: boolean;
     volume: number;
+    error?: string;
 }
 
 export async function exec(bin: string, args: (string | any)[]): Promise<string> {
