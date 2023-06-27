@@ -1,4 +1,4 @@
-import { Speaker } from "./speaker";
+import { Speaker, VolumeInfo } from "./speaker";
 import { runAppleScript } from "run-applescript";
 import { VolumeAction } from "./utils";
 import { ADJUST_STEP } from "./constants";
@@ -7,7 +7,7 @@ import { Cache } from "@raycast/api";
 const cache = new Cache();
 
 export class InternalSpeaker implements Speaker {
-    async adjustVolume(action: VolumeAction) {
+    async adjustVolume(action: VolumeAction): Promise<VolumeInfo> {
         if (action == VolumeAction.ToggleMute) {
             const muteScript = `set curVolume to get volume settings
 if output muted of curVolume is false then
@@ -18,7 +18,7 @@ end if
  return output muted of curVolume`;
             const isMuted = await runAppleScript(muteScript) == "false"
             this.setCache("isMuted", isMuted.toString());
-            return isMuted;
+            return { isMuted, volume: this.getVolume() };
         }
 
         let delta: string;
@@ -35,7 +35,7 @@ end if
         return output volume of (get volume settings)
         `);
         this.setCache("volume", newVolume);
-        return Number.parseInt(newVolume);
+        return {isMuted: false, volume: Number.parseInt(newVolume)};
     }
 
     setCache(key: string, value: string) {
