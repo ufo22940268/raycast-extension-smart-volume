@@ -110,5 +110,5 @@ export async function updateVolumeDisplay(volumeInfo: VolumeInfo) {
     await showVolume(vol);
     await updateLCDVolume(vol);
   }
-  await refreshMenubar();
+  // await refreshMenubar();
 }

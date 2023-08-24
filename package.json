@@ -29,13 +29,6 @@
       "mode": "no-view"
     },
     {
-      "name": "volumeMenu",
-      "title": "Volume menu",
-      "subtitle": "",
-      "description": "",
-      "mode": "menu-bar"
-    },
-    {
       "name": "syncVolume",
       "title": "Sync Volume",
       "description": "update external speaker volume to lcd",
