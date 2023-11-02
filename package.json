@@ -34,6 +34,13 @@
       "subtitle": "",
       "description": "",
       "mode": "menu-bar"
+    },
+    {
+      "name": "syncVolume",
+      "title": "Sync Volume",
+      "description": "update external speaker volume to lcd",
+      "mode": "no-view",
+      "interval": "10s"
     }
   ],
   "preferences": [
