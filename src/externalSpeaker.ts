@@ -28,6 +28,9 @@ export class ExternalSpeaker implements Speaker {
         }
         const stdout = await exec("/usr/local/bin/m1ddc", ["chg", "volume", delta])
         this.setCache('volume', stdout);
+        if (stdout != '0') {
+            this.setCache("isMuted", false.toString());
+        }
         return Number.parseInt(stdout);
     }
 
