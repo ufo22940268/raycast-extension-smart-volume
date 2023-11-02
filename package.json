@@ -40,7 +40,7 @@
       "title": "Sync Volume",
       "description": "update external speaker volume to lcd",
       "mode": "no-view",
-      "interval": "10s"
+      "interval": "30s"
     }
   ],
   "preferences": [
