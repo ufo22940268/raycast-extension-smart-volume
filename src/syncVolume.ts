@@ -1,4 +1,4 @@
-import { m1ddc, updateVolume } from "./utils";
+import { externalSpeaker, m1ddc, updateVolume } from "./utils";
 
 async function getVolume() {
   const vol = await m1ddc(["get", "volume"]);
@@ -9,7 +9,11 @@ async function getVolume() {
 
 export default async () => {
   const volume = await getVolume();
+  if (isNaN(Number(volume))) {
+    throw new Error(`${volume} can't be converted to number`);
+  }
   const vol = Number(volume);
   console.log(vol);
+  externalSpeaker.setVolume('volume', vol)
   await updateVolume(vol);
 }
