@@ -6,6 +6,7 @@ import path from "path";
 import { environment, launchCommand, LaunchType } from "@raycast/api";
 import fs from "fs";
 import { execa } from "execa";
+import { ABNORMAL_VOLUME } from "./constants";
 
 
 export enum VolumeAction {
@@ -33,6 +34,18 @@ export const adjustVolume = async (action: VolumeAction) => {
 
 export async function getVolume() {
   return (await getActiveDevice()).getVolume();
+}
+
+enum ActiveDeviceType {
+  Internal, External
+}
+export async function getActiveDeviceType() {
+  const dev = await getDefaultOutputDevice();
+  if (dev.transportType == "displayport") {
+    return ActiveDeviceType.External;
+  } else {
+    return ActiveDeviceType.Internal;
+  }
 }
 
 const binaryAsset = path.join(environment.assetsPath, "showosd");
@@ -79,3 +92,19 @@ export async function updateVolume(vol: number) {
   await updateText(vol.toString());
 }
 
+export async function updateVolumeDisplay() {
+  const dev = await getActiveDevice()
+  const isMuted = dev.isMuted();
+  if (isMuted) {
+    await showMuted(isMuted);
+    await updateVolume(0);
+  } else {
+    const vol = dev.getVolume()
+    if (vol == ABNORMAL_VOLUME) {
+      throw new Error("abnormal volume: " + vol);
+    }
+    await showVolume(vol);
+    await updateVolume(vol);
+  }
+  await refreshMenubar();
+}
