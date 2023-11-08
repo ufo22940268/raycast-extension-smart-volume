@@ -19,13 +19,13 @@ export const externalSpeaker = new ExternalSpeaker();
 const internalSpeaker = new InternalSpeaker();
 
 export async function getActiveDevice(): Promise<Speaker> {
-  return externalSpeaker
-  // const dev = await getDefaultOutputDevice();
-  // if (dev.transportType == "displayport") {
-  //   return externalSpeaker;
-  // } else {
-  //   return internalSpeaker;
-  // }
+  // return externalSpeaker
+  const dev = await getDefaultOutputDevice();
+  if (dev.transportType == "displayport") {
+    return externalSpeaker;
+  } else {
+    return internalSpeaker;
+  }
 }
 
 export const adjustVolume = async (action: VolumeAction) => {
@@ -90,7 +90,11 @@ export const updateText = async (text: string) => {
 }
 
 export async function updateLCDVolume(vol: number) {
-  await updateText(vol.toString());
+  try {
+    await updateText(vol.toString());
+  } catch(e) {
+    console.log("update lcd error:", e);
+  }
 }
 
 export async function updateVolumeDisplay(volumeInfo: VolumeInfo) {

@@ -2,7 +2,6 @@ import { VolumeAction } from "./utils";
 import { ADJUST_STEP } from "./constants";
 import { exec, Speaker, VolumeInfo } from "./speaker";
 import { Cache } from "@raycast/api";
-import { changeVolume } from "./volumeChanger";
 
 const cache = new Cache();
 
@@ -36,10 +35,12 @@ export class ExternalSpeaker implements Speaker {
             this.setCache("queue", vol.toString());
             await this.consumeQueue();
         } else {
+            console.log(2);
             this.setCache("queue", vol.toString());
-            setTimeout(async () => {
-                await this.consumeQueue();
-            }, 1000)
+            await this.consumeQueue();
+            // setTimeout(async () => {
+            //     await this.consumeQueue();
+            // }, 1000)
         }
         // console.log(`set to ${vol}`);
         this.setCache('volume', vol.toString());
