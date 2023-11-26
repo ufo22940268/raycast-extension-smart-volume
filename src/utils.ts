@@ -18,14 +18,28 @@ export enum VolumeAction {
 export const externalSpeaker = new ExternalSpeaker();
 const internalSpeaker = new InternalSpeaker();
 
+
+function trimAfterNotConnected(text: string) {
+  const notConnectedIndex = text.indexOf('Not Connected:');
+  return notConnectedIndex !== -1 ? text.slice(0, notConnectedIndex) : text;
+}
+
+
 export async function getActiveDevice(): Promise<Speaker> {
-  // return externalSpeaker
-  const dev = await getDefaultOutputDevice();
-  if (dev.transportType == "displayport") {
-    return externalSpeaker;
-  } else {
+  const output = await exec("/usr/sbin/system_profiler", ["SPBluetoothDataType"]);
+  if (trimAfterNotConnected(output).includes("AirPods Pro")) {
     return internalSpeaker;
+  } else {
+    return externalSpeaker;
   }
+
+
+  // const dev = await getDefaultOutputDevice();
+  // if (dev.transportType == "displayport") {
+  //   return externalSpeaker;
+  // } else {
+  //   return internalSpeaker;
+  // }
 }
 
 export const adjustVolume = async (action: VolumeAction) => {

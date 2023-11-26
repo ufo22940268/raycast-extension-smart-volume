@@ -51,7 +51,7 @@
     "@raycast/api": "^1.48.0",
     "@raycast/utils": "^1.4.18",
     "execa": "^7.0.0",
-    "macos-audio-devices": "^1.4.0",
+    "@spotxyz/macos-audio-devices": "1.5.0",
     "run-applescript": "^6.1.0"
   },
   "devDependencies": {
@@ -66,7 +66,7 @@
   },
   "scripts": {
     "build": "ray build -e dist",
-    "copy-binary": "cp node_modules/macos-audio-devices/audio-devices assets/audio-devices",
+    "copy-binary": "cp node_modules/@spotxyz/macos-audio-devices/audio-devices assets/audio-devices",
     "dev": "npm run copy-binary && ray develop",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
